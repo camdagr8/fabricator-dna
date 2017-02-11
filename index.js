@@ -17,15 +17,15 @@ const beautify_js = require('js-beautify');
 
 const dna = {
 	dependencies: function(key, helix, block) {
-		return dna.get(key, helix, block, 'dependencies');
+		return dna.get(key, helix, 'dependencies', block);
 	},
 
 	dependents: function(key, helix, block) {
-		return dna.get(key, helix, block, 'dependents');
+		return dna.get(key, helix, 'dependents', block);
 	},
 
-	get: function (key, helix, block, field) {
-		block = block || {fn: function () { return arguments[0]; }};
+	get: function (key, helix, field, block) {
+		block = block || {fn: function () { return arguments[arguments.length - 1]; }};
 
 		key = (typeof key === 'string') ? key : key[0];
 
@@ -80,16 +80,24 @@ const dna = {
 		return false;
 	},
 
-	hasDependencies: function (key, helix, block) {
-		block = block || {fn: function () { return arguments[0]; }};
-		var status = dna.check(key, helix, 'dependencies');
-		return block.fn(status);
+	hasDependencies: function (key, helix, options) {
+		options = options || {fn: function () { return arguments[arguments.length - 1]; }};
+			var status = dna.check(key, helix, 'dependencies');
+			if (status === true) {
+			return options.fn(this);
+		} else {
+			return options.inverse(this);
+		}
 	},
 
-	hasDependents: function (key, helix, block) {
-		block = block || {fn: function () { return arguments[0]; }};
-		var status = dna.check(key, helix, 'dependents');
-		return block.fn(status);
+	hasDependents: function (key, helix, options) {
+		options = options || {fn: function () { return arguments[arguments.length - 1]; }};
+			var status = dna.check(key, helix, 'dependents');
+			if (status === true) {
+			return options.fn(this);
+		} else {
+			return options.inverse(this);
+		}
 	},
 
 	link: function (str) {
