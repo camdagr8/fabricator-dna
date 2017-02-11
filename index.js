@@ -109,7 +109,7 @@ const dna = {
 		return l;
 	},
 
-	scan: function () {
+	scan: function (config) {
 		var files = [];
 		var res = {helix: {}};
 
