@@ -18,6 +18,6 @@ describe('#check', function() {
 	});
 
 	it('check(btn-active, dependents -> true)', function () {
-		dna.hasDependents('btn-active', data.helix, 'dependents').should.equal(false);
+		dna.check('btn-active', data.helix, 'dependents').should.equal(false);
 	});
 });

@@ -39,6 +39,8 @@ const dna = {
 				for (let p in deps) {
 					let data = {};
 					i++;
+
+					deps[p].sort();
 					data['count'] = deps[p].length;
 					data['selectors'] = deps[p];
 					data['link'] = dna.link(p);
@@ -82,8 +84,8 @@ const dna = {
 
 	hasDependencies: function (key, helix, options) {
 		options = options || {fn: function () { return arguments[arguments.length - 1]; }};
-			var status = dna.check(key, helix, 'dependencies');
-			if (status === true) {
+		var status = dna.check(key, helix, 'dependencies');
+		if (status === true) {
 			return options.fn(this);
 		} else {
 			return options.inverse(this);
@@ -92,8 +94,8 @@ const dna = {
 
 	hasDependents: function (key, helix, options) {
 		options = options || {fn: function () { return arguments[arguments.length - 1]; }};
-			var status = dna.check(key, helix, 'dependents');
-			if (status === true) {
+		var status = dna.check(key, helix, 'dependents');
+		if (status === true) {
 			return options.fn(this);
 		} else {
 			return options.inverse(this);
@@ -124,6 +126,20 @@ const dna = {
 	},
 
 	scan: function (config) {
+		var defaults = {
+			dna: 'src/data/dependencies.json',
+			materials: ['src/materials/**/*'],
+			views: ['src/views/**/*', '!src/views/+(layouts)/**']
+		};
+
+		config = config || {};
+
+		for (let prop in defaults) {
+			if (!config.hasOwnProperty(prop)) {
+				config[prop] = defaults[prop];
+			}
+		}
+
 		var files = [];
 		var res = {helix: {}};
 
