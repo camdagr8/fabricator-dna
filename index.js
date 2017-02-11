@@ -17,35 +17,14 @@ const beautify_js = require('js-beautify');
 
 const dna = {
 	dependencies: function(key, helix, block) {
-		block = block || {fn: function () { return arguments[0]; }};
-
-		key = (typeof key === 'string') ? key : key[0];
-
-		var output = '';
-
-		for (let prop in helix) {
-			if (helix[prop]['id'] === key) {
-				var deps = helix[prop]['dependencies'];
-
-				var i = -1;
-				for (let p in deps) {
-					let data = {};
-					i++;
-					data['count'] = deps[p].length;
-					data['selectors'] = deps[p];
-					data['link'] = dna.link(p);
-					data['file'] = p;
-					data['index'] = i;
-
-					output += block.fn(data);
-				}
-			}
-		}
-
-		return output;
+		return dna.get(key, helix, block, 'dependencies');
 	},
 
 	dependents: function(key, helix, block) {
+		return dna.get(key, helix, block, 'dependents');
+	},
+
+	get: function (key, helix, block, field) {
 		block = block || {fn: function () { return arguments[0]; }};
 
 		key = (typeof key === 'string') ? key : key[0];
@@ -54,7 +33,7 @@ const dna = {
 
 		for (let prop in helix) {
 			if (helix[prop]['id'] === key) {
-				var deps = helix[prop]['dependents'];
+				var deps = helix[prop][field];
 
 				var i = -1;
 				for (let p in deps) {
@@ -84,6 +63,29 @@ const dna = {
 		return matter.read(file, {
 			parser: require('js-yaml').safeLoad
 		});
+	},
+
+	check: function (key, helix, field) {
+		key = (typeof key === 'string') ? key : key[0];
+
+		for (let prop in helix) {
+			if (helix[prop]['id'] === key) {
+				var deps = helix[prop][field];
+				for (let p in deps) {
+					if (deps[p].length > 0) { return true; }
+				}
+			}
+		}
+
+		return false;
+	},
+
+	hasDependencies: function (key, helix) {
+		return dna.check(key, helix, 'dependencies');
+	},
+
+	hasDependents: function (key, helix) {
+		return dna.check(key, helix, 'dependents');
 	},
 
 	link: function (str) {
@@ -212,6 +214,8 @@ const dna = {
 module.exports = {
 	dependencies: dna.dependencies,
 	dependents: dna.dependents,
+	hasDependencies: dna.hasDependencies,
+	hasDependents: dna.hasDependents,
 	link: dna.link,
 	scan: dna.scan
 }

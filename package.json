@@ -1,6 +1,6 @@
 {
   "name": "fabricator-dna",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Fabricator module that creates a dependency tracker.",
   "main": "index.js",
   "scripts": {
@@ -24,5 +24,14 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^3.2.0"
+  },
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "globby": "^6.1.0",
+    "gray-matter": "^2.1.0",
+    "js-beautify": "^1.6.9",
+    "js-yaml": "^3.8.1",
+    "lodash": "^4.17.4",
+    "path": "^0.12.7"
   }
 }
