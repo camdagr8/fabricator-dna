@@ -5,19 +5,19 @@ var should 	= require('chai').should(),
 
 describe('#check', function() {
 
-	it('hasDependents(btn-group->true)', function () {
-		dna.hasDependents('btn-group', data.helix).should.equal(true);
+	it('check(btn-group, dependents -> true)', function () {
+		dna.check('btn-group', data.helix, 'dependents').should.equal(true);
 	});
 
-	it('hasDependencies(btn-group->true)', function () {
-		dna.hasDependencies('btn-group', data.helix).should.equal(true);
+	it('check(btn-group, dependencies -> true)', function () {
+		dna.check('btn-group', data.helix, 'dependencies').should.equal(true);
 	});
 
-	it('hasDependencies(btn->false)', function () {
-		dna.hasDependencies('btn', data.helix).should.equal(false);
+	it('check(btn, dependencies -> false)', function () {
+		dna.check('btn', data.helix, 'dependencies').should.equal(false);
 	});
 
-	it('hasDependents(btn-active->true)', function () {
-		dna.hasDependents('btn-active', data.helix).should.equal(false);
+	it('check(btn-active, dependents -> true)', function () {
+		dna.hasDependents('btn-active', data.helix, 'dependents').should.equal(false);
 	});
 });

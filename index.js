@@ -80,12 +80,16 @@ const dna = {
 		return false;
 	},
 
-	hasDependencies: function (key, helix) {
-		return dna.check(key, helix, 'dependencies');
+	hasDependencies: function (key, helix, block) {
+		block = block || {fn: function () { return arguments[0]; }};
+		var status = dna.check(key, helix, 'dependencies');
+		return block.fn(status);
 	},
 
-	hasDependents: function (key, helix) {
-		return dna.check(key, helix, 'dependents');
+	hasDependents: function (key, helix, block) {
+		block = block || {fn: function () { return arguments[0]; }};
+		var status = dna.check(key, helix, 'dependents');
+		return block.fn(status);
 	},
 
 	link: function (str) {
@@ -212,6 +216,7 @@ const dna = {
  * Exports
  */
 module.exports = {
+	check: dna.check,
 	dependencies: dna.dependencies,
 	dependents: dna.dependents,
 	hasDependencies: dna.hasDependencies,
