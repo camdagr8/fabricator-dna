@@ -1,6 +1,6 @@
 {
   "name": "fabricator-dna",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Fabricator module that creates a dependency tracker.",
   "main": "index.js",
   "scripts": {
